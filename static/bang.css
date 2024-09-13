@@ -1,0 +1,70 @@
+/* Đảm bảo thẻ body và html chiếm toàn bộ không gian */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+/* Styling cho card-body */
+.card-body {
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 100%;
+}
+
+/* Tạo bảng chiếm toàn bộ chiều rộng */
+.full-width-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+    background-color: white;
+}
+
+/* Styling cho bảng */
+.full-width-table th, 
+.full-width-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+/* Tạo màu nền cho các tiêu đề của bảng */
+.full-width-table thead th {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Đổi màu nền khi di chuột lên hàng của bảng */
+.full-width-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Xóa khoảng cách giữa các nút */
+.btn-danger {
+    color: white;
+    background-color: #dc3545;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Styling khi nút được di chuột */
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Đảm bảo bảng hiển thị tốt trên thiết bị nhỏ */
+@media (max-width: 768px) {
+    .full-width-table {
+        font-size: 14px;
+    }
+    .full-width-table th, 
+    .full-width-table td {
+        padding: 8px 10px;
+    }
+}

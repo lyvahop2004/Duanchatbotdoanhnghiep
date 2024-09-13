@@ -1,0 +1,22 @@
+.chat-container {
+    /* Thiết lập kích thước, vị trí, background cho toàn bộ giao diện */
+    width: 300px;
+    height: 400px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+/* Các style cho header, avatar, tin nhắn, nút, v.v. */
+.avatar {
+    /* Thiết kế cho avatar */
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+}
+
+/* ... các style khác ... */

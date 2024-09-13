@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm dữ liệu</title>
+    <link rel="stylesheet" type="text/css" href="/static/Dashboard.css">
+   
+    <link rel="stylesheet" type="text/css" href="/static/bang.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Bảng điều khiển công ty</h2>
+        <ul>
+            <li><a href="index.html">Trang chủ</a></li>
+            <li><a href="#analytics">Dữ liệu công ty</a></li>
+            <li><a href="#reports">Báo cáo</a></li>
+            <li><a href="#settings">Cài đặt</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <h1>Chào mừng đến với Bảng điều khiển</h1>
+            <div class="user-info">
+                <p>Hello, Admin</p>
+                <img src="https://scontent.fbmv1-1.fna.fbcdn.net/v/t39.30808-1/336305174_933078281161080_589548041170849205_n.jpg?stp=c0.0.720.720a_dst-jpg_s200x200&_nc_cat=103&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=g4_BiDCLQFQQ7kNvgHy8brV&_nc_ht=scontent.fbmv1-1.fna&oh=00_AYD2KgbQ7WPMOehy7hw_E0EcxvYpv1iI8aGeKgs9fi8dww&oe=66E09D18" alt="User Avatar" class="avatar">
+            </div>
+        </div>
+
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>Quản Trị dữ liệu của công ty</h2>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ url_for('add_data') }}" class="btn btn-primary float-end">Thêm</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body">
+            <table class="table table-bordered full-width-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Người thêm</th>
+                        <th>Lĩnh vực</th>
+                        <th>Từ khóa</th>
+                        <th>Chọn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in data %}
+                    <tr data-id="{{ item.id }}">
+                        <td>{{ loop.index }}</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>{{ item.field }}</td>
+                        <td>{{ item.keywords }}</td>
+                        
+                           
+                        
+                        <td>
+                            <a href="{{ url_for('edit_data', data_id=item.id) }}" class="btn btn-warning">Sửa</a>
+                         
+                         
+                            
+                            <form action="{{ url_for('delete_data', data_id=item.id) }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <button type="submit" class="btn btn-danger">Xóa</button>
+                            </form>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    <script>
+        // Xử lý sự kiện submit form với AJAX
+        $('#addDataForm').on('submit', function(e) {
+            e.preventDefault(); // Ngăn không reload trang
+            
+            // Lấy dữ liệu từ form
+            var field = $('#field').val();
+            var keywords = $('#keywords').val();
+            
+            // Gửi dữ liệu đến server qua AJAX
+            $.ajax({
+                url: '/add_data',
+                type: 'POST',
+                data: {
+                    field: field,
+                    keywords: keywords
+                },
+                success: function(response) {
+                    // Xóa nội dung cũ của bảng
+                    $('#dataTable').empty();
+                    
+                    // Duyệt qua dữ liệu mới trả về và cập nhật bảng
+                    $.each(response, function(index, item) {
+                        $('#dataTable').append(
+                            '<tr>' +
+                                '<td>' + (index + 1) + '</td>' +
+                                '<td>' + item.field + '</td>' +
+                                '<td>' + item.keywords + '</td>' +
+                            '</tr>'
+                        );
+                    });
+                    
+                    // Reset form sau khi submit
+                    $('#addDataForm')[0].reset();
+                }
+            });
+        });
+
+        // mới thêm 
+        // Bắt sự kiện khi nhấn nút "Sửa"
+// Bắt sự kiện khi nhấn nút "Sửa"
+$(document).on('click', '.btn-edit', function() {
+    // Lấy dữ liệu từ hàng được chọn
+    var row = $(this).closest('tr');
+    var field = row.find('td:eq(2)').text();
+    var keywords = row.find('td:eq(3)').text();
+    var id = row.attr('data-id'); // Giả sử mỗi hàng có thuộc tính data-id là id của bản ghi
+
+    // Điền dữ liệu vào form chỉnh sửa
+    $('#edit-id').val(id);
+    $('#edit-field').val(field);
+    $('#edit-keywords').val(keywords);
+
+    // Hiển thị form chỉnh sửa
+    $('.edit-data-form').show();
+});
+
+
+// Xử lý submit form chỉnh sửa
+$('#editDataForm').on('submit', function(e) {
+    e.preventDefault(); // Ngăn không reload trang
+
+    var id = $('#edit-id').val();
+    var field = $('#edit-field').val();
+    var keywords = $('#edit-keywords').val();
+
+    // Gửi dữ liệu cập nhật qua AJAX
+    $.ajax({
+        url: '/update_data',  // URL API để cập nhật dữ liệu
+        type: 'POST',
+        data: {
+            id: id,
+            field: field,
+            keywords: keywords
+        },
+        success: function(response) {
+    // Cập nhật lại bảng với dữ liệu mới
+    $('#dataTable').empty();
+    $.each(response, function(index, item) {
+        $('#dataTable').append(
+            '<tr data-id="' + item.id + '">' +
+                '<td>' + (index + 1) + '</td>' +
+                '<td>Nguyễn Văn A</td>' + // Giả sử tên người thêm là Nguyễn Văn A
+                '<td>' + item.field + '</td>' +
+                '<td>' + item.keywords + '</td>' +
+                '<td>' +
+                    '<button type="button" class="btn btn-edit">Sửa</button>' +
+                    '<button type="button" class="btn btn-danger">Xóa</button>' +
+                '</td>' +
+            '</tr>'
+        );
+    });
+
+    // Ẩn form chỉnh sửa sau khi cập nhật
+    $('.edit-data-form').hide();
+}
+    });
+});
+
+    </script>
+    
+</body>
+</html>

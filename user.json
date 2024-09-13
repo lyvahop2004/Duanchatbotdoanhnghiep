@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "name": "vanhop",
+        "email": "lyhop2004@gmail.com",
+        "sodt": "0332657251",
+        "password": "1"
+    },
+    {
+        "id": 2,
+        "name": "milo dầm",
+        "email": "vanhop@gmail.com",
+        "sodt": "0332657252",
+        "password": "1"
+    },
+    {
+        "id": 3,
+        "name": "milo dầm",
+        "email": "hoplvpk02876@gmail.com",
+        "sodt": "0332657254",
+        "password": "1"
+    }
+]
